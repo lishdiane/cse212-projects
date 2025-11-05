@@ -11,20 +11,71 @@ public class CustomerService {
         // Test Cases
 
         // Test 1
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: The max size is >= 0 
+        // Expected Result: The max size should default to 10
         Console.WriteLine("Test 1");
 
-        // Defect(s) Found: 
+        var maxSize = new CustomerService(0);
+        Console.WriteLine(maxSize);
+
+        // Defect(s) Found: none
 
         Console.WriteLine("=================");
 
         // Test 2
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: A new customer is added to the queue.
+        // Expected Result: A new customer is enqueueed.
         Console.WriteLine("Test 2");
 
-        // Defect(s) Found: 
+        var queue = new CustomerService(3);
+        queue.AddNewCustomer();
+        Console.WriteLine(queue);
+
+        // Defect(s) Found: none
+
+        Console.WriteLine("=================");
+
+        // Test 3
+        // Scenario: A customer is added to a full queue.
+        // Expected Result: An error message is displayed
+        Console.WriteLine("Test 3");
+        queue = new CustomerService(1);
+        queue.AddNewCustomer();
+        queue.AddNewCustomer();
+        queue.AddNewCustomer();
+
+        // Defect(s) Found: changed to - queue.count <= max
+
+        Console.WriteLine("=================");
+
+        // Test 4
+        // Scenario: A customer has been served. 
+        // Expected Result: The customer info is dequeued and displayed. 
+        Console.WriteLine("Test 4");
+
+        queue = new CustomerService(3);
+        queue.AddNewCustomer();
+        queue.AddNewCustomer();
+        queue.AddNewCustomer();
+        Console.WriteLine(queue);
+        queue.ServeCustomer();
+        queue.ServeCustomer();
+        queue.ServeCustomer();
+        Console.WriteLine(queue);
+
+        // Defect(s) Found: Moved customer up and remove down
+
+        Console.WriteLine("=================");
+
+        // Test 5
+        // Scenario: The queue is empty but a customer is being served.
+        // Expected Result: An error message. 
+        Console.WriteLine("Test 5");
+
+        queue = new CustomerService(1);
+        queue.ServeCustomer();
+
+        // Defect(s) Found: Added a condition if queue is empty. 
 
         Console.WriteLine("=================");
 
@@ -67,7 +118,7 @@ public class CustomerService {
     /// </summary>
     private void AddNewCustomer() {
         // Verify there is room in the service queue
-        if (_queue.Count > _maxSize) {
+        if (_queue.Count >= _maxSize) {
             Console.WriteLine("Maximum Number of Customers in Queue.");
             return;
         }
@@ -88,9 +139,17 @@ public class CustomerService {
     /// Dequeue the next customer and display the information.
     /// </summary>
     private void ServeCustomer() {
-        _queue.RemoveAt(0);
-        var customer = _queue[0];
-        Console.WriteLine(customer);
+
+        if (_queue.Count <= 0)
+        {
+            Console.WriteLine("There are no people in the queue.");
+        }
+        else
+        {
+            var customer = _queue[0];
+            Console.WriteLine(customer);
+            _queue.RemoveAt(0);
+        }
     }
 
     /// <summary>
