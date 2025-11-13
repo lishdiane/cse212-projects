@@ -1,5 +1,7 @@
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using System.Windows.Markup;
 
 public static class SetsAndMaps
 {
@@ -60,7 +62,14 @@ public static class SetsAndMaps
         foreach (var line in File.ReadLines(filename))
         {
             var fields = line.Split(",");
-            // TODO Problem 2 - ADD YOUR CODE HERE
+            var degree = fields[3];
+            if (degrees.ContainsKey(degree)) {
+                degrees[degree] += 1;
+
+            } else
+            {
+                degrees.Add(degree, 1);
+            }
         }
 
         return degrees;
@@ -84,8 +93,39 @@ public static class SetsAndMaps
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        var arr1 = word1.ToLower().Replace(" ", "").ToCharArray();
+        var arr2 = word2.ToLower().Replace(" ", "").ToCharArray();
+
+        var dic = new Dictionary<char, int>();
+
+        if (arr1.Length != arr2.Length)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < arr1.Length; i++)
+        {
+            if (dic.ContainsKey(arr1[i]))
+            {
+                dic[arr1[i]] += 1;
+            }
+            else
+            {
+                dic[arr1[i]] = 1;
+            }
+        }
+        
+        for (int i = 0; i < arr2.Length; i++)
+        {
+            if (!dic.ContainsKey(arr2[i]) || dic[arr2[i]] == 0){
+                    return false;
+            } else
+            {
+                dic[arr2[i]] -= 1;
+            }
+        }
+
+        return true;
     }
 
     /// <summary>
@@ -114,11 +154,13 @@ public static class SetsAndMaps
 
         var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json, options);
 
-        // TODO Problem 5:
-        // 1. Add code in FeatureCollection.cs to describe the JSON using classes and properties 
-        // on those classes so that the call to Deserialize above works properly.
-        // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
-        // 3. Return an array of these string descriptions.
-        return [];
+        var data = new string[featureCollection.Features.Length];
+        for (int i = 0; i < featureCollection.Features.Length; i++)
+        {
+            var feature = featureCollection.Features[i];
+            data[i] = $"{feature.Properties.Place} - Mag {feature.Properties.Mag}";
+        }
+
+        return data;
     }
 }

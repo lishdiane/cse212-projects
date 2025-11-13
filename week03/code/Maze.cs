@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 /// <summary>
 /// Defines a maze using a dictionary. The dictionary is provided by the
 /// user when the Maze object is created. The dictionary will contain the
@@ -32,7 +34,14 @@ public class Maze
     /// </summary>
     public void MoveLeft()
     {
-        // FILL IN CODE
+        var currentPosition = (_currX, _currY);
+        if (_mazeMap[currentPosition][0] == false)
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        } else
+        {
+            _currX -= 1;
+        }
     }
 
     /// <summary>
@@ -41,7 +50,15 @@ public class Maze
     /// </summary>
     public void MoveRight()
     {
-        // FILL IN CODE
+        var currentPosition = (_currX, _currY);
+        if (_mazeMap[currentPosition][1] == false)
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        else
+        {
+            _currX += 1;
+        }
     }
 
     /// <summary>
@@ -50,7 +67,16 @@ public class Maze
     /// </summary>
     public void MoveUp()
     {
-        // FILL IN CODE
+        var currentPosition = (_currX, _currY);
+        if (_mazeMap[currentPosition][2] == false)
+        {
+           // Debug.WriteLine(_mazeMap[currentPosition][2]);
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        else
+        {
+            _currY -= 1;
+        }
     }
 
     /// <summary>
@@ -59,7 +85,15 @@ public class Maze
     /// </summary>
     public void MoveDown()
     {
-        // FILL IN CODE
+        var currentPosition = (_currX, _currY);
+        if (_mazeMap[currentPosition][3] == false)
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        else
+        {
+            _currY += 1;
+        }
     }
 
     public string GetStatus()
